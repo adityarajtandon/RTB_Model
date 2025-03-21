@@ -53,51 +53,53 @@ df_merged = df_bid.merge(df_val[["BidID", "PayingPrice", "Clicked", "Converted",
 
 print(f"Total Clicks in Validation Set: {df_merged['Clicked'].sum()}")
 print(f"Total Conversions in Validation Set: {df_merged['Converted'].sum()}")
+#print total no of values in df_merged (size)
+print(df_merged.shape)
 
 #print values with clicks = 1
 df_merged_clicks = df_merged[df_merged['Clicked'] == 1]
 print(df_merged_clicks)
 
-# # Initialize Bid model
-# bid = Bid(total_budget=10000, campaign_duration=50)  # Example budget
+#Initialize Bid model
+bid = Bid(total_budget=10000, campaign_duration=50)  # Example budget
 
-# # Simulate bidding
-# results = []
-# for _, row in df_merged.iterrows():
-#     bid_request = BidRequest(row)
-#     bid_price = bid.getBidPrice(bid_request)
+# Simulate bidding
+results = []
+for _, row in df_merged.iterrows():
+    bid_request = BidRequest(row)
+    bid_price = bid.getBidPrice(bid_request)
 
-#     if bid_price == -99:  # Stop bidding if budget is exhausted
-#         break
+    if bid_price == -99:  # Stop bidding if budget is exhausted
+        break
 
-#     if bid_price != -1:  # Append only valid bids
-#         results.append({
-#             "BidID": row["BidID"],
-#             "BidPrice": bid_price
-#         })
+    if bid_price != -1:  # Append only valid bids
+        results.append({
+            "BidID": row["BidID"],
+            "BidPrice": bid_price
+        })
 
-# # Convert results to DataFrame
-# df_results = pd.DataFrame(results)
+# Convert results to DataFrame
+df_results = pd.DataFrame(results)
 
-# # Ensure merging Clicked & Converted correctly for score calculation
-# df_results = df_results.merge(df_val[["BidID", "Clicked", "Converted", "AdvertiserID"]], on="BidID", how="left").fillna(0)
+# Ensure merging Clicked & Converted correctly for score calculation
+df_results = df_results.merge(df_val[["BidID", "Clicked", "Converted", "AdvertiserID"]], on="BidID", how="left").fillna(0)
 
-# # Compute Hackathon Score
-# # Advertiser-to-N mapping
-# advertiser_n_mapping = {
-#     1458: 0,  # Local e-commerce
-#     3358: 2,  # Software
-#     3386: 0,  # Global e-commerce
-#     3427: 0,  # Oil
-#     3476: 10  # Tire
-# }
+# Compute Hackathon Score
+# Advertiser-to-N mapping
+advertiser_n_mapping = {
+    1458: 0,  # Local e-commerce
+    3358: 2,  # Software
+    3386: 0,  # Global e-commerce
+    3427: 0,  # Oil
+    3476: 10  # Tire
+}
 
-# # Add the N column based on AdvertiserID
-# df_results["N"] = df_results["AdvertiserID"].map(advertiser_n_mapping)
+# Add the N column based on AdvertiserID
+df_results["N"] = df_results["AdvertiserID"].map(advertiser_n_mapping)
 
-# # Compute the Hackathon Score dynamically
-# df_results["WeightedConversions"] = df_results["Converted"] * df_results["N"]
-# score = df_results["Clicked"].sum() + df_results["WeightedConversions"].sum()
+# Compute the Hackathon Score dynamically
+df_results["WeightedConversions"] = df_results["Converted"] * df_results["N"]
+score = df_results["Clicked"].sum() + df_results["WeightedConversions"].sum()
 
-# print(f"Final Hackathon Score: {score}")
-# print(f"Total Remaining Budget: {bid.remaining_budget}")
+print(f"Final Hackathon Score: {score}")
+print(f"Total Remaining Budget: {bid.remaining_budget}")

@@ -7,7 +7,7 @@ import random
 
 class Bid(Bidder):
 
-    def __init__(self, total_budget=100000, campaign_duration=86400):
+    def __init__(self, total_budget, campaign_duration):
         self.total_budget = total_budget
         self.remaining_budget = total_budget
         self.q_table = {}
