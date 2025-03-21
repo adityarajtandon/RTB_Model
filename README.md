@@ -1,7 +1,11 @@
 # **Real-Time Bidding (RTB) Model - Project Overview**  
 
 ## **Introduction**  
-This project implements a **Real-Time Bidding (RTB) system** using **Q-learning** and **Deep Learning** to optimize bidding strategies in online advertising auctions. The goal is to maximize the advertiser's returns by efficiently bidding on ad impressions while staying within budget.
+This project implements an offline-simulated Real-Time Bidding (RTB) system using Q-learning and Deep Learning models to optimize bidding strategies in programmatic advertising.
+
+The goal is to maximize advertiser performance (clicks + weighted conversions) under a fixed budget constraint, using historical bidding logs provided in the iPinYou dataset. The system simulates ad auctions using past bid, impression, click, and conversion logs to evaluate how effectively the model selects optimal bid prices.
+
+While this project currently runs in a simulation environment, it lays the groundwork for deployment in a real-time ad exchange setting by replicating a realistic auction flow, including second-price auctions and budget pacing.
 
 ---
 
